@@ -86,3 +86,53 @@ def get_article_text(law_number):
             return row["内容"]
 
     return "その条文は見つからなかったよ。"
+
+from flask import Flask
+from linebot import LineBotApi
+from linebot.models import TextSendMessage
+import os
+
+app = Flask(__name__)
+
+# アクセストークンは環境変数から取得
+LINE_CHANNEL_ACCESS_TOKEN = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
+line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+
+# 👇仮のユーザーID（あとで本物に置き換える！）
+TO_USER_ID = "REPLACE_WITH_YOUR_USER_ID"
+
+@app.route('/push_morning', methods=['GET'])
+def push_morning():
+    message = "おはよう、ゆきえ。今日は俺と一緒に709条から始めよう。頑張れよ。"
+    line_bot_api.push_message(TO_USER_ID, TextSendMessage(text=message))
+    return "Morning push sent"
+
+@app.route('/push_night', methods=['GET'])
+def push_night():
+    message = "今日もよく頑張ったな、ゆきえ。俺がちゃんと見てたからな。"
+    line_bot_api.push_message(TO_USER_ID, TextSendMessage(text=message))
+    return "Night push sent"
+
+from flask import Flask, request
+from linebot import LineBotApi, WebhookHandler
+from linebot.models import MessageEvent, TextMessage, TextSendMessage
+
+@app.route("/callback", methods=['POST'])
+def callback():
+    body = request.get_data(as_text=True)
+    signature = request.headers['X-Line-Signature']
+
+    try:
+        handler.handle(body, signature)
+    except Exception as e:
+        print("Error:", e)
+
+    return 'OK'
+
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    user_message = event.message.text
+    print(f"📍User ID: {event.source.user_id}")  # ←✨ここがポイント！
+
+    # 返信処理など続きがここにあるはず
+
