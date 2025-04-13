@@ -63,3 +63,26 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
 
 print("彼氏の家はこちら → https://"+os.environ["REPL_SLUG"]+"."+os.environ["REPL_OWNER"]+".repl.co/callback")
+
+import os
+import json
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+def get_article_text(law_number):
+    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+
+    # Renderに設定した環境変数から認証情報を取得
+    creds_json = json.loads(os.environ['GOOGLE_SHEET_CREDS'])
+
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_json, scope)
+    client = gspread.authorize(creds)
+
+    sheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1dBprzx9NSeDkhSMW7cEW68ujDlEY1w3Yia65wgqziyI/edit#gid=145842828").sheet1
+    data = sheet.get_all_records()
+
+    for row in data:
+        if row["条文番号"] == law_number:
+            return row["内容"]
+
+    return "その条文は見つからなかったよ。"
