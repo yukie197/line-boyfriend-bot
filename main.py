@@ -98,4 +98,7 @@ def push_night():
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
 
+git add requirements.txt
+git commit -m "Add gspread and oauth2client"
+git push origin main
 
