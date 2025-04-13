@@ -136,3 +136,6 @@ def handle_message(event):
 
     # 返信処理など続きがここにあるはず
 
+print("✨ メッセージ受け取ったよ！")
+
+
