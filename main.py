@@ -97,4 +97,13 @@ def push_night():
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
 
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    user_input = event.message.text
+
+    # 👇この1行を追加する！
+    print(f"📍User ID: {event.source.user_id}")
+
+    # ↓既存のAI応答部分はそのままでOK
+    ...
 
