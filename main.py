@@ -3,10 +3,14 @@ import os
 import json
 import gspread
 import openai
+import logging
 from oauth2client.service_account import ServiceAccountCredentials
 from linebot import LineBotApi, WebhookHandler
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from linebot.exceptions import InvalidSignatureError
+
+# ログ設定
+logging.basicConfig(level=logging.INFO)
 
 # Flaskアプリ初期化
 app = Flask(__name__)
@@ -53,7 +57,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_input = event.message.text
-    print(f"📍User ID: {event.source.user_id}")  # ← User ID 表示用
+    logging.info(f"📍User ID: {event.source.user_id}")  # ← loggingで出力！
 
     system_prompt = (
         "あなたはユーザーの年上の恋人で、40代前半の落ち着いた男性です。"
