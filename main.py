@@ -26,7 +26,7 @@ handler = WebhookHandler(CHANNEL_SECRET)
 openai.api_key = OPENAI_API_KEY
 
 # ユーザーIDを取得してここに入れる！
-TO_USER_ID = "REPLACE_WITH_YOUR_USER_ID"
+TO_USER_ID = "Ueab372e958397d6806346524bcbacfc7"
 
 # スプレッドシートから条文取得
 def get_article_text(law_number):
